@@ -1,19 +1,21 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.21;
+pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./PocpImplementation.sol";
+
 import "./Error.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "./PocpImplementation.sol";
 
 contract PocpProxy is
     Initializable,
     ReentrancyGuardUpgradeable,
     PausableUpgradeable,
-    OwnableUpgradeable
+    OwnableUpgradeable,
+    UUPSUpgradeable
 {
     using Clones for address;
     using Counters for Counters.Counter;
@@ -23,13 +25,17 @@ contract PocpProxy is
     mapping(uint256 => Poc) public pocMapping;
     uint256 public creationFee;
 
-    constructor(address _pocpImplementationAddress) {
+    function initialize(
+       address _pocpImplementationAddress
+    ) public initializer {
         pocpImplementationAddress = _pocpImplementationAddress;
         idCounter.increment();
     }
 
     event PocContractCreated(address contractAddress);
     event CreationFeeSet(uint256 creationFee);
+
+    function _authorizeUpgrade(address) internal virtual override onlyOwner {}
 
     function pause() public onlyOwner {
         _pause();
@@ -43,6 +49,7 @@ contract PocpProxy is
         uint256 id;
         address owner;
         address contractAddress;
+        uint256 createdAt;
     }
 
     function createPoc(
@@ -54,7 +61,12 @@ contract PocpProxy is
         }
         address clonedAddress = pocpImplementationAddress.clone();
         PocpImplementation(clonedAddress).initialize(_name, _symbol);
-        Poc memory poc = Poc(idCounter.current(), msg.sender, clonedAddress);
+        Poc memory poc = Poc(
+            idCounter.current(),
+            msg.sender,
+            clonedAddress,
+            block.timestamp
+        );
         pocMapping[idCounter.current()] = poc;
         emit PocContractCreated(clonedAddress);
     }
