@@ -20,6 +20,8 @@ contract PocpImplementation is
         string memory _symbol
     ) public initializer {
         __ERC721_init(_name, _symbol);
+        __Ownable_init();
+        transferOwnership(tx.origin);
     }
 
     function mintNFTs(

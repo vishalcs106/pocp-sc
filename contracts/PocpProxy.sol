@@ -25,10 +25,13 @@ contract PocpProxy is
     mapping(uint256 => Poc) public pocMapping;
     uint256 public creationFee;
 
-    function initialize(
-       address _pocpImplementationAddress
-    ) public initializer {
+    function initialize(address _pocpImplementationAddress) public initializer {
+        __ReentrancyGuard_init();
+        __Pausable_init();
+        __Ownable_init();
+        __UUPSUpgradeable_init();
         pocpImplementationAddress = _pocpImplementationAddress;
+        creationFee = 0.001 ether;
         idCounter.increment();
     }
 
@@ -50,11 +53,16 @@ contract PocpProxy is
         address owner;
         address contractAddress;
         uint256 createdAt;
+        string startDate;
+        string endDate;
+        bool verified;
     }
 
     function createPoc(
         string memory _name,
-        string memory _symbol
+        string memory _symbol,
+        string memory _startDate,
+        string memory _endDate
     ) external payable whenNotPaused nonReentrant {
         if (msg.value != creationFee) {
             revert InvalidFee();
@@ -65,7 +73,10 @@ contract PocpProxy is
             idCounter.current(),
             msg.sender,
             clonedAddress,
-            block.timestamp
+            block.timestamp,
+            _startDate,
+            _endDate,
+            false
         );
         pocMapping[idCounter.current()] = poc;
         emit PocContractCreated(clonedAddress);

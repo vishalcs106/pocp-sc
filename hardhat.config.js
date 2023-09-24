@@ -22,7 +22,7 @@ for (const account of accounts) {
 */
 module.exports = {
 solidity: "0.8.9",
-defaultNetwork: "fuji",
+defaultNetwork: "mumbai",
 networks: {
   fuji: {
     url: 'https://api.avax-test.network/ext/bc/C/rpc',
@@ -30,7 +30,7 @@ networks: {
     accounts: [process.env.PRIVATE]
   },
   mumbai: {
-    url: 'https://rpc-mumbai.maticvigil.com',
+    url: 'https://polygon-mumbai-bor.publicnode.com',
     chainId: 80001,
     accounts: [process.env.PRIVATE]
   }
