@@ -79,6 +79,7 @@ contract PocpProxy is
             false
         );
         pocMapping[idCounter.current()] = poc;
+        idCounter.increment();
         emit PocContractCreated(clonedAddress);
     }
 
