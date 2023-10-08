@@ -20,10 +20,7 @@ contract PocpRegistry is
     mapping(address => DataTypes.Poc) public pocMapping;
     mapping(address => address) public pocOwnerMapping;
 
-    function initialize(
-        string memory _name,
-        string memory _symbol
-    ) public initializer {
+    function initialize() public initializer {
         __Ownable_init();
     }
 
