@@ -27,11 +27,15 @@ contract PocpProxy is
     address public pocpRegistryAddress;
     uint256 public creationFee;
 
-    function initialize(address _pocpImplementationAddress) public initializer {
+    function initialize(
+        address _pocpImplementationAddress,
+        address _pocpRegistryAddress
+    ) public initializer {
         __ReentrancyGuard_init();
         __Pausable_init();
         __Ownable_init();
         __UUPSUpgradeable_init();
+        pocpRegistryAddress = _pocpRegistryAddress;
         pocpImplementationAddress = _pocpImplementationAddress;
         creationFee = 0.001 ether;
         idCounter.increment();
