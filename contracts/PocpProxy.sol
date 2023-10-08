@@ -22,7 +22,8 @@ contract PocpProxy is
     Counters.Counter private idCounter;
 
     address public pocpImplementationAddress;
-    mapping(uint256 => Poc) public pocMapping;
+    mapping(address => Poc) public pocMapping;
+    mapping(address => address) public pocOwnerMapping;
     uint256 public creationFee;
 
     function initialize(address _pocpImplementationAddress) public initializer {
@@ -78,7 +79,8 @@ contract PocpProxy is
             _endDate,
             false
         );
-        pocMapping[idCounter.current()] = poc;
+        pocMapping[clonedAddress] = poc;
+        pocOwnerMapping[msg.sender] = clonedAddress;
         idCounter.increment();
         emit PocContractCreated(clonedAddress);
     }
