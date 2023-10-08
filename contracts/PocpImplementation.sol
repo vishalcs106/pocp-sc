@@ -6,6 +6,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./Error.sol";
+import "./IPocpRegistry.sol";
+import "./DataTypes.sol";
 
 contract PocpImplementation is
     Initializable,
@@ -26,16 +28,19 @@ contract PocpImplementation is
 
     function mintNFTs(
         address[] memory _toAddresses,
-        string[] memory _tokenURIArray
+        string[] memory _tokenURIArray,
+        address _pocpRegistryAddress
     ) external onlyOwner {
         tokenIdCounter.increment();
         require(
             _toAddresses.length == _tokenURIArray.length,
             "Array length mismatch"
         );
+        IPocpRegistry iPocpRegistry = IPocpRegistry(_pocpRegistryAddress);
         for (uint256 i = 0; i < _toAddresses.length; i++) {
             uint256 tokenId = tokenIdCounter.current();
             _mint(_toAddresses[i], tokenId);
+            iPocpRegistry.addPocp(msg.sender, address(this), tokenId);
             _setTokenURI(tokenId, _tokenURIArray[i]);
             tokenIdCounter.increment();
         }

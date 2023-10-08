@@ -20,6 +20,8 @@ contract PocpRegistry is
     mapping(address => DataTypes.Poc) public pocMapping;
     mapping(address => address) public pocOwnerMapping;
 
+    function _authorizeUpgrade(address) internal virtual override onlyOwner {}
+
     function addPocp(
         address _owner,
         address _contractAddress,
