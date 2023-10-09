@@ -24,6 +24,7 @@ contract PocpImplementation is
         __ERC721_init(_name, _symbol);
         __Ownable_init();
         transferOwnership(tx.origin);
+        tokenIdCounter.increment();
     }
 
     function getCurrentSupply() public view returns (uint256) {
@@ -35,7 +36,6 @@ contract PocpImplementation is
         string[] memory _tokenURIArray,
         address _pocpRegistryAddress
     ) external onlyOwner {
-        tokenIdCounter.increment();
         require(
             _toAddresses.length == _tokenURIArray.length,
             "Array length mismatch"
@@ -44,7 +44,7 @@ contract PocpImplementation is
         for (uint256 i = 0; i < _toAddresses.length; i++) {
             uint256 tokenId = tokenIdCounter.current();
             _mint(_toAddresses[i], tokenId);
-            iPocpRegistry.addPocp(msg.sender, address(this), tokenId);
+            iPocpRegistry.addPocp(_toAddresses[i], address(this), tokenId);
             _setTokenURI(tokenId, _tokenURIArray[i]);
             tokenIdCounter.increment();
         }

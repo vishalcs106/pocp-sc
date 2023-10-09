@@ -76,7 +76,7 @@ contract PocpProxy is
             false
         );
         IPocpRegistry iPocpRegistry = IPocpRegistry(pocpRegistryAddress);
-        iPocpRegistry.savePoc(poc);
+        iPocpRegistry.savePoc(poc, clonedAddress);
         idCounter.increment();
         emit PocContractCreated(clonedAddress);
     }

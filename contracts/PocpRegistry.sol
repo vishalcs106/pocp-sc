@@ -67,8 +67,11 @@ contract PocpRegistry is
         pocpRegistry[_owner].pop();
     }
 
-    function savePoc(DataTypes.Poc calldata poc) public {
+    function savePoc(
+        DataTypes.Poc calldata poc,
+        address contractAddress
+    ) public {
         pocMapping[poc.contractAddress] = poc;
-        pocOwnerMapping[msg.sender] = poc.contractAddress;
+        pocOwnerMapping[tx.origin] = contractAddress;
     }
 }

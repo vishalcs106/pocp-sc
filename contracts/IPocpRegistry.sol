@@ -19,5 +19,8 @@ interface IPocpRegistry {
 
     function removePocp(address _owner, uint256 index) external;
 
-    function savePoc(DataTypes.Poc calldata poc) external;
+    function savePoc(
+        DataTypes.Poc calldata poc,
+        address contractAddress
+    ) external;
 }
