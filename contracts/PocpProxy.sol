@@ -70,6 +70,7 @@ contract PocpProxy is
             msg.sender,
             clonedAddress,
             block.timestamp,
+            _name,
             _startDate,
             _endDate,
             false

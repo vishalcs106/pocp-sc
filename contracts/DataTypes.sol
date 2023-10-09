@@ -12,6 +12,7 @@ contract DataTypes {
         address owner;
         address contractAddress;
         uint256 createdAt;
+        string programName;
         string startDate;
         string endDate;
         bool verified;

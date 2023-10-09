@@ -26,6 +26,10 @@ contract PocpImplementation is
         transferOwnership(tx.origin);
     }
 
+    function getCurrentSupply() public view returns (uint256) {
+        return tokenIdCounter.current();
+    }
+
     function mintNFTs(
         address[] memory _toAddresses,
         string[] memory _tokenURIArray,
