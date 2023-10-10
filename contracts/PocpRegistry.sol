@@ -18,7 +18,7 @@ contract PocpRegistry is
 {
     mapping(address => DataTypes.PocNft[]) public pocpRegistry;
     mapping(address => DataTypes.Poc) public pocMapping;
-    mapping(address => address) public pocOwnerMapping;
+    mapping(address => address[]) public pocOwnerMapping;
 
     function initialize() public initializer {
         __Ownable_init();
@@ -72,6 +72,6 @@ contract PocpRegistry is
         address contractAddress
     ) public {
         pocMapping[poc.contractAddress] = poc;
-        pocOwnerMapping[tx.origin] = contractAddress;
+        pocOwnerMapping[tx.origin].push(contractAddress);
     }
 }
