@@ -53,11 +53,11 @@ contract PocpImplementation is
         uint256 _tokenId,
         uint256 _index,
         address _pocpRegistryAddress
-    ) internal override(ERC721URIStorageUpgradeable) onlyOwner {
+    ) internal onlyOwner {
+        super._burn(_tokenId);
         IPocpRegistry iPocpRegistry = IPocpRegistry(_pocpRegistryAddress);
-        address holder = ownerOf(tokenId);
-        iPocpRegistry.removePocp(holder, index);
-        super._burn(tokenId);
+        address holder = ownerOf(_tokenId);
+        iPocpRegistry.removePocp(holder, _index);
     }
 
     function _beforeTokenTransfer(
