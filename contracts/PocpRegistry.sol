@@ -43,6 +43,10 @@ contract PocpRegistry is
         return pocpRegistry[_owner].length;
     }
 
+    function getPocpCreatedCount(address _owner) public view returns (uint256) {
+        return pocOwnerMapping[_owner].length;
+    }
+
     function getPocpByIndex(
         address _owner,
         uint256 index

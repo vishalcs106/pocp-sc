@@ -5,8 +5,8 @@ const hre = require("hardhat");
 async function main() {
   const PocpProxy = await hre.ethers.getContractFactory("PocpProxy");
   const pocpProxy = await hre.upgrades.deployProxy(PocpProxy, [
-    "0x41B22dCd1aC25b478c6207cC2335d2319A0F71d5",
-    "0xd3B077C4B7971aeBa4251274135615957f268bE5",
+    "0x6325Cd9D08301120a8b362C0ABc3837e0FdF1d2c",
+    "0x61F1693C2858a74e54c9B288Fb586c9714F3d5A0",
   ]);
   await pocpProxy.deployed();
 

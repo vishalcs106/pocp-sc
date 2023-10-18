@@ -24,7 +24,6 @@ contract PocpImplementation is
         __ERC721_init(_name, _symbol);
         __Ownable_init();
         transferOwnership(tx.origin);
-        tokenIdCounter.increment();
     }
 
     function getCurrentSupply() public view returns (uint256) {
@@ -51,8 +50,13 @@ contract PocpImplementation is
     }
 
     function _burn(
-        uint256 tokenId
+        uint256 _tokenId,
+        uint256 _index,
+        address _pocpRegistryAddress
     ) internal override(ERC721URIStorageUpgradeable) onlyOwner {
+        IPocpRegistry iPocpRegistry = IPocpRegistry(_pocpRegistryAddress);
+        address holder = ownerOf(tokenId);
+        iPocpRegistry.removePocp(holder, index);
         super._burn(tokenId);
     }
 
